@@ -1,3 +1,5 @@
+import * as ort from 'onnxruntime-web';
+
 export interface ModelInput {
   ageBucket: string;
   locationType: string;
@@ -22,31 +24,61 @@ export interface ModelOutput {
   confidence: number;
 }
 
+let sessionCache: ort.InferenceSession | null = null;
+
+async function getSession(): Promise<ort.InferenceSession> {
+  if (!sessionCache) {
+    sessionCache = await ort.InferenceSession.create('/models/xain_model.onnx', {
+      executionProviders: ['wasm'],
+      graphOptimizationLevel: 'all'
+    });
+  }
+  return sessionCache;
+}
+
 export async function runONNXModel(input: ModelInput): Promise<ModelOutput> {
-  const features = [
-    input.ageBucket === 'young' ? 0 : input.ageBucket === 'middle' ? 1 : 2,
-    input.locationType === 'urban' ? 0 : input.locationType === 'semiurban' ? 1 : 2,
-    input.kycStatus,
-    input.onTimePaymentRate,
-    input.avgDaysPastDue,
-    input.numLoansPast24m,
-    input.defaultFlagEver,
-    input.avgCreditUtilization,
-    input.utilizationVariability,
-    input.electricityUsageKwh,
-    input.rechargeFrequencyPerMonth,
-    input.avgRechargeAmount,
-    input.billsOnTimeRatio,
-    input.paymentChannelDiversity,
-    input.incomeProxyIndex,
-    input.dataCompletenessScore
-  ];
+  try {
+    const session = await getSession();
+    
+    // Prepare input features array
+    const features = [
+      input.ageBucket === 'young' ? 0 : input.ageBucket === 'middle' ? 1 : 2,
+      input.locationType === 'urban' ? 0 : input.locationType === 'semiurban' ? 1 : 2,
+      input.kycStatus,
+      input.onTimePaymentRate,
+      input.avgDaysPastDue,
+      input.numLoansPast24m,
+      input.defaultFlagEver,
+      input.avgCreditUtilization,
+      input.utilizationVariability,
+      input.electricityUsageKwh,
+      input.rechargeFrequencyPerMonth,
+      input.avgRechargeAmount,
+      input.billsOnTimeRatio,
+      input.paymentChannelDiversity,
+      input.incomeProxyIndex,
+      input.dataCompletenessScore
+    ];
 
-  const prediction = features[3] * 0.3 + features[12] * 0.25 + (1 - features[7]) * 0.2 +
-                    (features[6] === 0 ? 0.25 : 0);
+    // Create ONNX tensor from input features
+    const tensor = new ort.Tensor('float32', new Float32Array(features), [1, 16]);
+    
+    // Run inference
+    const feeds: Record<string, ort.Tensor> = { input: tensor };
+    const results = await session.run(feeds);
 
-  return {
-    prediction: prediction > 0.75 ? 0 : prediction > 0.5 ? 1 : 2,
-    confidence: 0.85 + Math.random() * 0.1
-  };
+    // Get prediction probabilities from output
+    const outputData = results.output.data as Float32Array;
+    const prediction = Array.from(outputData).indexOf(Math.max(...outputData));
+    const confidence = Math.max(...outputData);
+
+    return {
+      prediction,
+      confidence
+    };
+
+  } catch (error) {
+    console.error('ONNX inference failed:', error);
+    throw new Error(`ONNX inference failed: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }
