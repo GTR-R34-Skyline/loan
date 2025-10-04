@@ -115,24 +115,6 @@ export default function Demo() {
           </p>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8 max-w-4xl mx-auto">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h4 className="font-semibold text-blue-900 mb-1">ONNX Model Integration Placeholder</h4>
-              <p className="text-sm text-blue-800">
-                This demo currently uses a simulated scoring algorithm. To integrate your actual ONNX model:
-              </p>
-              <ol className="text-sm text-blue-800 mt-2 space-y-1 list-decimal list-inside">
-                <li>Place your <code className="bg-blue-100 px-2 py-0.5 rounded">xain_model.onnx</code> file in <code className="bg-blue-100 px-2 py-0.5 rounded">/public/models/</code></li>
-                <li>Install ONNX Runtime: <code className="bg-blue-100 px-2 py-0.5 rounded">npm install onnxruntime-web</code></li>
-                <li>Update <code className="bg-blue-100 px-2 py-0.5 rounded">src/utils/onnxInference.ts</code> to load and run your model</li>
-                <li>Replace the mock prediction logic in this component with actual ONNX inference</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-
         <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
