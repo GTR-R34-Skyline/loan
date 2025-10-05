@@ -6,51 +6,51 @@ export default function Features() {
       icon: Brain,
       title: 'Explainable AI Models',
       description: 'Every credit decision comes with clear reasoning and feature importance rankings, ensuring transparency and auditability.',
-      gradient: 'from-blue-500 to-blue-600'
+      animation: 'animate-tilt'
     },
     {
       icon: Zap,
       title: 'Real-Time Credit Scoring',
       description: 'ONNX-powered inference delivers instant risk assessments with confidence scores and band classifications.',
-      gradient: 'from-teal-500 to-teal-600'
+      animation: 'animate-float'
     },
     {
       icon: BarChart3,
       title: 'Income & Consumption Insights',
       description: 'Analyze electricity usage, recharge patterns, and payment behaviors to build comprehensive financial profiles.',
-      gradient: 'from-cyan-500 to-cyan-600'
+      animation: 'hover:animate-scale-pulse'
     },
     {
       icon: Shield,
       title: 'Risk Band Classification',
       description: 'Categorize applicants into Low, Medium, and High risk bands with detailed scoring breakdowns.',
-      gradient: 'from-indigo-500 to-indigo-600'
+      animation: 'animate-slide-left'
     },
     {
       icon: Database,
       title: 'Alternative Data Integration',
       description: 'Go beyond traditional credit bureaus with utility payments, mobile recharge, and behavioral data.',
-      gradient: 'from-purple-500 to-purple-600'
+      animation: 'hover:animate-shimmer'
     },
     {
       icon: Layers,
       title: 'Dashboard & API Access',
       description: 'Seamless integration with existing systems through RESTful APIs and comprehensive admin dashboards.',
-      gradient: 'from-pink-500 to-pink-600'
+      animation: 'hover:animate-float'
     }
   ];
 
   return (
-    <section id="features" className="py-24 bg-gray-50">
+    <section id="features" className="py-24 bg-gradient-to-br from-neutral-50 via-stone-50 to-neutral-100">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold mb-4">
+          <div className="inline-block px-6 py-2 card-gradient-black text-gradient-gold rounded-full text-sm font-semibold mb-4 tracking-wider">
             PLATFORM FEATURES
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Powerful Tools for Fair Lending
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto font-light">
             Advanced AI capabilities designed to make credit accessible, transparent, and equitable.
           </p>
         </div>
@@ -59,13 +59,18 @@ export default function Features() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group bg-white rounded-xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+              className={`group card-gradient-black rounded-xl p-8 shadow-amex hover:shadow-amex-hover transition-all duration-500 hover:-translate-y-2 border border-[#D4AF37]/20 overflow-hidden relative ${feature.animation}`}
+              style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br ${feature.gradient} rounded-lg mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <feature.icon className="w-7 h-7 text-white" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#D4AF37] to-[#F4E7C3] rounded-lg mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
+                  <feature.icon className="w-7 h-7 text-black" />
+                </div>
+                <h3 className="text-xl font-bold text-[#D4AF37] mb-3 tracking-wide">{feature.title}</h3>
+                <p className="text-gray-300 leading-relaxed font-light">{feature.description}</p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37] rounded-full blur-3xl opacity-0 group-hover:opacity-10 transition-opacity duration-500 -translate-y-16 translate-x-16"></div>
             </div>
           ))}
         </div>
