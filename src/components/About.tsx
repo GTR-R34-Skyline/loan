@@ -2,7 +2,7 @@ import { Target, Users, Shield } from 'lucide-react';
 
 export default function About() {
   return (
-    <section id="about" className="py-24 bg-white">
+    <section id="about" className="py-24 bg-gradient-to-br from-neutral-50 via-stone-50 to-neutral-100">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -32,19 +32,19 @@ export default function About() {
               description: 'Every decision is explainable, auditable, and designed to promote fair lending practices across all demographics.'
             }
           ].map((item, index) => (
-            <div key={index} className="text-center p-8 rounded-xl hover:bg-gray-50 transition-colors duration-300">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-teal-500 rounded-xl mb-6">
-                <item.icon className="w-8 h-8 text-white" />
+            <div key={index} className="text-center p-8 card-gradient-black rounded-xl border border-[#D4AF37]/20 shadow-amex hover:shadow-amex-hover transition-all duration-500">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#D4AF37] to-[#F4E7C3] rounded-xl mb-6">
+                <item.icon className="w-8 h-8 text-black" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{item.description}</p>
+              <h3 className="text-xl font-bold text-[#D4AF37] mb-3 tracking-wide">{item.title}</h3>
+              <p className="text-gray-300 leading-relaxed font-light">{item.description}</p>
             </div>
           ))}
         </div>
 
-        <div className="bg-gradient-to-br from-slate-900 to-blue-900 rounded-2xl p-12 text-white">
+        <div className="card-gradient-black rounded-2xl p-12 text-white border border-[#D4AF37]/20 shadow-amex">
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-3xl font-bold mb-8 text-center">How X-AIN Works</h3>
+            <h3 className="text-3xl font-bold mb-8 text-center text-[#D4AF37]">How X-AIN Works</h3>
             <div className="grid md:grid-cols-4 gap-6">
               {[
                 { step: '01', title: 'Data Collection', desc: 'Gather multi-dimensional data points' },
@@ -52,12 +52,12 @@ export default function About() {
                 { step: '03', title: 'Risk Assessment', desc: 'Generate explainable scores' },
                 { step: '04', title: 'Decision Support', desc: 'Provide actionable insights' }
               ].map((item, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-4xl font-bold text-blue-400 mb-3">{item.step}</div>
-                  <div className="text-lg font-semibold mb-2">{item.title}</div>
-                  <div className="text-sm text-gray-300">{item.desc}</div>
+                <div key={index} className="text-center relative">
+                  <div className="text-4xl font-bold text-gradient-gold mb-3">{item.step}</div>
+                  <div className="text-lg font-semibold mb-2 text-[#D4AF37]">{item.title}</div>
+                  <div className="text-sm text-gray-300 font-light">{item.desc}</div>
                   {index < 3 && (
-                    <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-blue-500/30"></div>
+                    <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-[#D4AF37]/30"></div>
                   )}
                 </div>
               ))}

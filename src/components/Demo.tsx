@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TrendingUp, AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
+import { saveCreditAssessment, type CreditAssessment } from '../lib/supabase';
 
 interface FormData {
   beneficiaryId: string;
@@ -91,11 +92,42 @@ export default function Demo() {
       riskBand = 'C';
     }
 
+    const finalConfidence = Math.round(confidence * 10) / 10;
+
     setResult({
       risk,
-      confidence: Math.round(confidence * 10) / 10,
+      confidence: finalConfidence,
       riskBand
     });
+
+    try {
+      const assessment: CreditAssessment = {
+        beneficiary_id: formData.beneficiaryId,
+        age_bucket: formData.ageBucket,
+        location_type: formData.locationType,
+        kyc_status: parseInt(formData.kycStatus),
+        on_time_payment_rate: parseFloat(formData.onTimePaymentRate),
+        avg_days_past_due: parseFloat(formData.avgDaysPastDue),
+        num_loans_past_24m: parseInt(formData.numLoansPast24m),
+        default_flag_ever: parseInt(formData.defaultFlagEver),
+        avg_credit_utilization: parseFloat(formData.avgCreditUtilization),
+        utilization_variability: parseFloat(formData.utilizationVariability),
+        electricity_usage_kwh: parseFloat(formData.electricityUsageKwh),
+        recharge_frequency_per_month: parseFloat(formData.rechargeFrequencyPerMonth),
+        avg_recharge_amount: parseFloat(formData.avgRechargeAmount),
+        bills_on_time_ratio: parseFloat(formData.billsOnTimeRatio),
+        payment_channel_diversity: parseInt(formData.paymentChannelDiversity),
+        income_proxy_index: parseFloat(formData.incomeProxyIndex),
+        data_completeness_score: parseFloat(formData.dataCompletenessScore),
+        risk_assessment: risk,
+        confidence_score: finalConfidence,
+        risk_band: riskBand
+      };
+
+      await saveCreditAssessment(assessment);
+    } catch (error) {
+      console.error('Failed to save assessment to database:', error);
+    }
 
     setLoading(false);
   };
